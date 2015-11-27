@@ -1,4 +1,7 @@
-# eslintme [![Build Status](https://travis-ci.org/ruyadorno/eslintme.svg?branch=master)](https://travis-ci.org/ruyadorno/eslintme)
+# eslintme
+
+[![NPM version](https://badge.fury.io/js/eslintme.svg)](https://npmjs.org/package/git-bc)
+[![Build Status](https://travis-ci.org/ruyadorno/eslintme.svg?branch=master)](https://travis-ci.org/ruyadorno/eslintme)
 
 > The fastest way to eslint a single file
 
