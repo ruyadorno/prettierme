@@ -14,8 +14,8 @@ Options:
 	exit 0;
 fi
 
-# figures out the dir of current script
-function findcurrentdir() {
+# figures out the path to eslint_d executable
+function findeslintd() {
 	source="${BASH_SOURCE[0]}"
 	while [ -h "$source" ]; do
 		currdir="$( cd -P "$( dirname "$source" )" && pwd )"
@@ -23,28 +23,34 @@ function findcurrentdir() {
 		[[ $source != /* ]] && source="$currdir/$source"
 	done
 	currdir="$( cd -P "$( dirname "$source" )" && pwd )"
-	echo "$currdir"
+	if [ -e "$currdir/node_modules/eslint_d/bin/eslint_d.js" ]; then
+		# nested install
+		echo "$currdir/node_modules/eslint_d/bin/eslint_d.js"
+	else
+		# flat npm3 install
+		echo "$currdir/../eslint_d/bin/eslint_d.js"
+	fi
 }
 
 # forwards eslint_d commands
 if [ "$1" == "stop" ]; then
-	dir="$(findcurrentdir)"
-	"$dir/node_modules/eslint_d/bin/eslint_d.js" stop
+	eslintexec="$(findeslintd)"
+	"$eslintexec" stop
 	exit 0;
 fi
 if [ "$1" == "start" ]; then
-	dir="$(findcurrentdir)"
-	"$dir/node_modules/eslint_d/bin/eslint_d.js" start
+	eslintexec="$(findeslintd)"
+	"$eslintexec" start
 	exit 0;
 fi
 if [ "$1" == "status" ]; then
-	dir="$(findcurrentdir)"
-	"$dir/node_modules/eslint_d/bin/eslint_d.js" status
+	eslintexec="$(findeslintd)"
+	"$eslintexec" status
 	exit 0;
 fi
 if [ "$1" == "restart" ]; then
-	dir="$(findcurrentdir)"
-	"$dir/node_modules/eslint_d/bin/eslint_d.js" restart
+	eslintexec="$(findeslintd)"
+	"$eslintexec" restart
 	exit 0;
 fi
 
@@ -54,10 +60,10 @@ eslintdport="$(cat ~/.eslint_d_port 2> /dev/null)"
 # if the server isn't running starts it and get the port
 if [ -z "$eslintdport" ]; then
 
-	dir="$(findcurrentdir)"
+	eslintexec="$(findeslintd)"
 
 	# starts the eslint_d server
-	"$dir/node_modules/eslint_d/bin/eslint_d.js" start
+	"$eslintexec" start
 	eslintdport=$(cat ~/.eslint_d_port)
 fi
 
