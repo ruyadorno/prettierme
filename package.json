@@ -1,0 +1,35 @@
+{
+  "name": "eslintme",
+  "version": "1.0.0",
+  "description": "The fastest way to eslint a single file",
+  "license": "MIT",
+  "repository": "ruyadorno/eslintme",
+  "author": {
+    "name": "Ruy Adorno",
+    "url": "ruyadorno.com"
+  },
+  "bin": "eslintme",
+  "files": [
+    "eslintme"
+  ],
+  "keywords": [
+    "eslint",
+    "eslint_d",
+    "eslintme",
+    "linter",
+    "vim",
+    "fast",
+    "faster",
+    "cli-app",
+    "cli"
+  ],
+  "scripts": {
+    "test": "node test/test.js"
+  },
+  "dependencies": {
+    "eslint_d": "ruyadorno/eslint_d.js#eslintme"
+  },
+  "devDependencies": {
+    "eslint-config-airbnb": "^1.0.0"
+  }
+}

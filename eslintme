@@ -1,0 +1,66 @@
+#!/usr/bin/env bash
+
+if [ "$1" == "--version" ]; then
+	echo "v1.0.0"
+	exit 0;
+fi
+
+if [ "$1" == "--help" ]; then
+	echo "eslintme [options] [file.js]
+
+Options:
+  --help    Show this help menu
+  --version Prints version number"
+	exit 0;
+fi
+
+# figures out the dir of current script
+function findcurrentdir() {
+	source="${BASH_SOURCE[0]}"
+	while [ -h "$source" ]; do
+		currdir="$( cd -P "$( dirname "$source" )" && pwd )"
+		source="$(readlink "$source")"
+		[[ $source != /* ]] && source="$currdir/$source"
+	done
+	currdir="$( cd -P "$( dirname "$source" )" && pwd )"
+	echo "$currdir"
+}
+
+# forwards eslint_d commands
+if [ "$1" == "stop" ]; then
+	dir="$(findcurrentdir)"
+	"$dir/node_modules/eslint_d/bin/eslint_d.js" stop
+	exit 0;
+fi
+if [ "$1" == "start" ]; then
+	dir="$(findcurrentdir)"
+	"$dir/node_modules/eslint_d/bin/eslint_d.js" start
+	exit 0;
+fi
+if [ "$1" == "status" ]; then
+	dir="$(findcurrentdir)"
+	"$dir/node_modules/eslint_d/bin/eslint_d.js" status
+	exit 0;
+fi
+if [ "$1" == "restart" ]; then
+	dir="$(findcurrentdir)"
+	"$dir/node_modules/eslint_d/bin/eslint_d.js" restart
+	exit 0;
+fi
+
+# gets the port of eslint_d running server
+eslintdport="$(cat ~/.eslint_d_port 2> /dev/null)"
+
+# if the server isn't running starts it and get the port
+if [ -z "$eslintdport" ]; then
+
+	dir="$(findcurrentdir)"
+
+	# starts the eslint_d server
+	"$dir/node_modules/eslint_d/bin/eslint_d.js" start
+	eslintdport=$(cat ~/.eslint_d_port)
+fi
+
+# uses netcat to lint the file
+echo ". $1" | nc localhost "$eslintdport"
+
