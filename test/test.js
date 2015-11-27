@@ -21,9 +21,10 @@ function testSuccessLint() {
 function testErrorLint() {
 	console.log('> Successfully outputs errors on linting');
 	run(['test/fixtures/error.js'], function (data) {
-		assert.equal(
-			fs.readFileSync('test/fixtures/error-result').toString(),
-			data.toString()
+		assert(
+			data.toString().indexOf(
+				fs.readFileSync('test/fixtures/error-result').toString()
+			) > -1
 		);
 	}, testStopEslintd);
 }
