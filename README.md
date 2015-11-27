@@ -13,7 +13,7 @@ This is a convenience script around [eslint_d](https://github.com/mantoni/eslint
 ## Install
 
 ```
-$ npm install --save eslintme
+$ npm install -g eslintme
 ```
 
 

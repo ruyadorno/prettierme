@@ -23,6 +23,7 @@
     "cli-app",
     "cli"
   ],
+  "preferGlobal": true,
   "scripts": {
     "test": "node test/test.js"
   },
