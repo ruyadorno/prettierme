@@ -23,7 +23,7 @@ function findeslintd() {
 		[[ $source != /* ]] && source="$currdir/$source"
 	done
 	currdir="$( cd -P "$( dirname "$source" )" && pwd )"
-	if [ hash eslint_d 2>/dev/null; ]; then
+	if hash eslint_d 2>/dev/null; then
 		# use global eslint_d install
 		echo eslint_d
 	elif [ -e "$currdir/node_modules/eslint_d/bin/eslint_d.js" ]; then
