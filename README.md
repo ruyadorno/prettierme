@@ -47,7 +47,7 @@ Due to the nature of how `eslint` plugins work, you usually have to install them
 **How to lint a project that has a eslint plugin:**
 
 0. Install **eslint**: `npm install -g eslint`
-0. Install **eslint_d**: `npm install -g eslint_d`
+0. Install **eslint_d**: `npm install -g ruyadorno/eslint_d.js#eslintme`
 0. Install **eslintme**: `npm install -g eslintme`
 0. Install the required plugins (example): `npm install -g eslint-plugin-react`
 
