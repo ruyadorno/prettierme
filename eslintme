@@ -71,5 +71,5 @@ if [ -z "$eslintdport" ]; then
 fi
 
 # uses netcat to lint the file
-echo ". $1" | nc localhost "$eslintdport"
+echo "{\"cwd\":\".\",\"args\":[\"-f\",\"compact\",\"$1\"]}" | nc localhost "$eslintdport"
 

@@ -28,7 +28,7 @@
     "test": "node test/test.js"
   },
   "dependencies": {
-    "eslint_d": "ruyadorno/eslint_d.js#eslintme"
+    "eslint_d": "^2.4.0"
   },
   "devDependencies": {
     "eslint-config-airbnb": "^1.0.0"

@@ -4,7 +4,10 @@ var fs = require('fs');
 
 function run(params, assertFn, cb) {
 	var eslintme = exec('./eslintme', params);
-	assertFn && eslintme.stdout.on('data', assertFn);
+	if (assertFn) {
+		eslintme.stdout.on('data', assertFn);
+		eslintme.stderr.on('data', assertFn);
+	}
 	cb && eslintme.on('close', cb);
 }
 
