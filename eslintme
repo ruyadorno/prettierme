@@ -58,7 +58,8 @@ if [ "$1" == "restart" ]; then
 fi
 
 # gets the port of eslint_d running server
-eslintdport="$(cat ~/.eslint_d_port 2> /dev/null)"
+eslintdport="$(cat ~/.eslint_d | cut -d ' ' -f 1)"
+eslintdtoken="$(cat ~/.eslint_d | cut -d ' ' -f 2)"
 
 # if the server isn't running starts it and get the port
 if [ -z "$eslintdport" ]; then
@@ -67,9 +68,11 @@ if [ -z "$eslintdport" ]; then
 
 	# starts the eslint_d server
 	"$eslintexec" start
-	eslintdport=$(cat ~/.eslint_d_port)
+	sleep 0.1
+	eslintdport=$(cat ~/.eslint_d | cut -d ' ' -f 1)
+	eslintdtoken=$(cat ~/.eslint_d | cut -d ' ' -f 2)
 fi
 
 # uses netcat to lint the file
-echo "{\"cwd\":\".\",\"args\":[\"-f\",\"compact\",\"$1\"]}" | nc localhost "$eslintdport"
+echo "$eslintdtoken {\"cwd\":\"$PWD\",\"args\":[\"-f\",\"compact\",\"$1\"]}" | nc 127.0.0.1 "$eslintdport"
 
