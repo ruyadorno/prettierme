@@ -1,1 +1,1 @@
-test/fixtures/error.js: line 2, col 2, Error - Parsing error: Unexpected token <
+test/fixtures/error.js: line 2, col 1, Error - Parsing error: Unexpected token <
