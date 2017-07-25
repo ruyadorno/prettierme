@@ -1,14 +1,15 @@
 var assert = require('assert');
-var exec = require('child_process').spawn;
+var spawn = require('child_process').spawn;
+var exec = require('child_process').exec;
 var fs = require('fs');
 
 function run(params, assertFn, cb) {
-	var eslintme = exec('./eslintme', params);
+	var prettierme = spawn('./prettierme', params);
 	if (assertFn) {
-		eslintme.stdout.on('data', assertFn);
-		eslintme.stderr.on('data', assertFn);
+		prettierme.stdout.on('data', assertFn);
+		prettierme.stderr.on('data', assertFn);
 	}
-	cb && eslintme.on('close', cb);
+	cb && prettierme.on('close', cb);
 }
 
 function testSuccessLint() {
@@ -22,18 +23,21 @@ function testSuccessLint() {
 }
 
 function testErrorLint() {
-	console.log('> Successfully outputs errors on linting');
+	console.log('> Correctly modifies issues on files');
 	run(['test/fixtures/error.js'], function (data) {
-		assert(
-			data.toString().indexOf(
-				fs.readFileSync('test/fixtures/error-result').toString()
-			) > -1
+		assert.equal(
+			fs.readFileSync('test/fixtures/error.js').toString(),
+			fs.readFileSync('test/fixtures/success.js').toString()
 		);
-	}, testStopEslintd);
+	}, revertErrorFile);
 }
 
-function testStopEslintd() {
-	console.log('> Successfully stops eslint_d server');
+function revertErrorFile() {
+	exec('git checkout test/fixture/error.js', testStopprettierd);
+}
+
+function testStopprettierd() {
+	console.log('> Successfully stops prettier_d server');
 	run(['stop'], function (data) {
 		assert.equal(
 			'',
@@ -46,14 +50,14 @@ function testStoppedStatus() {
 	console.log('> Status should indicate not running server');
 	run(['status'], function (data) {
 		assert.equal(
-			'Not running\n',
+			'Error: Not running\n',
 			data.toString()
 		);
-	}, testStartEslintd);
+	}, testStartprettierd);
 }
 
-function testStartEslintd() {
-	console.log('> Should be able to start eslint_d');
+function testStartprettierd() {
+	console.log('> Should be able to start prettier_d');
 	run(['start'], function (data) {
 		assert.equal(
 			'',
@@ -69,11 +73,11 @@ function testStartedStatus() {
 			'Running\n',
 			data.toString()
 		);
-	}, testRestartEslintd);
+	}, testRestartprettierd);
 }
 
-function testRestartEslintd() {
-	console.log('> Should be able to restart eslint_d');
+function testRestartprettierd() {
+	console.log('> Should be able to restart prettier_d');
 	run(['restart'], function (data) {
 		assert.equal(
 			'',

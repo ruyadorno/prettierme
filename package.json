@@ -1,21 +1,21 @@
 {
-  "name": "eslintme",
-  "version": "1.1.6",
-  "description": "The fastest way to eslint a single file",
+  "name": "prettierme",
+  "version": "1.0.0",
+  "description": "The fastest way to prettier a single file",
   "license": "MIT",
-  "repository": "ruyadorno/eslintme",
+  "repository": "ruyadorno/prettierme",
   "author": {
     "name": "Ruy Adorno",
     "url": "ruyadorno.com"
   },
-  "bin": "eslintme",
+  "bin": "prettierme",
   "files": [
-    "eslintme"
+    "prettierme"
   ],
   "keywords": [
-    "eslint",
-    "eslint_d",
-    "eslintme",
+    "prettier",
+    "prettier_d",
+    "prettierme",
     "linter",
     "vim",
     "fast",
@@ -28,7 +28,7 @@
     "test": "node test/test.js"
   },
   "dependencies": {
-    "eslint_d": "^4.x.x"
+    "prettier_d": "^5.x.x"
   },
   "devDependencies": {
     "eslint-config-es5": "^0.5.0"

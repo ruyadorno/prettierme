@@ -1,8 +1,7 @@
-var foo = '';
+var foo = "";
 
 function bar(a) {
-  return foo + a;
+	return foo + a;
 }
 
-bar('');
-
+bar("");

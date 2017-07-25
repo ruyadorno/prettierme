@@ -1,0 +1,80 @@
+#!/usr/bin/env bash
+
+if [ "$1" == "--version" ]; then
+	echo "v1.1.5"
+	exit 0;
+fi
+
+if [ "$1" == "--help" ]; then
+	echo "prettierme [options] [file.js]
+
+Options:
+  --help    Show this help menu
+  --version Prints version number"
+	exit 0;
+fi
+
+# figures out the path to prettier_d executable
+function findprettierd() {
+	source="${BASH_SOURCE[0]}"
+	while [ -h "$source" ]; do
+		currdir="$( cd -P "$( dirname "$source" )" && pwd )"
+		source="$(readlink "$source")"
+		[[ $source != /* ]] && source="$currdir/$source"
+	done
+	currdir="$( cd -P "$( dirname "$source" )" && pwd )"
+	if hash prettier_d 2>/dev/null; then
+		# use global prettier_d install
+		echo prettier_d
+	elif [ -e "$currdir/node_modules/prettier_d/bin/prettier_d.js" ]; then
+		# nested install
+		echo "$currdir/node_modules/prettier_d/bin/prettier_d.js"
+	else
+		# flat npm3 install
+		echo "$currdir/../prettier_d/bin/prettier_d.js"
+	fi
+}
+
+# forwards prettier_d commands
+if [ "$1" == "stop" ]; then
+	prettierexec="$(findprettierd)"
+	"$prettierexec" stop
+	exit 0;
+fi
+if [ "$1" == "start" ]; then
+	prettierexec="$(findprettierd)"
+	"$prettierexec" start
+	exit 0;
+fi
+if [ "$1" == "status" ]; then
+	prettierexec="$(findprettierd)"
+	"$prettierexec" status
+	exit 0;
+fi
+if [ "$1" == "restart" ]; then
+	prettierexec="$(findprettierd)"
+	"$prettierexec" restart
+	exit 0;
+fi
+
+# gets the port of prettier_d running server
+prettierddata=$(cat ~/.prettier_d 2> /dev/null)
+prettierdport="$(echo $prettierddata | cut -d ' ' -f 1)"
+prettierdtoken="$(echo $prettierddata | cut -d ' ' -f 2)"
+
+# if the server isn't running starts it and get the port
+if [ -z "$prettierddata" ]; then
+
+	prettierexec="$(findprettierd)"
+
+	# starts the prettier_d server
+	"$prettierexec" start
+	sleep 0.1
+	prettierddata=$(cat ~/.prettier_d)
+	prettierdport=$(echo $prettierddata | cut -d ' ' -f 1)
+	prettierdtoken=$(echo $prettierddata  | cut -d ' ' -f 2)
+fi
+
+# uses netcat to lint the file
+echo "$prettierdtoken {\"cwd\":\"$PWD\",\"args\":[\"--local-only\", \"--pkg-conf\", \"$1\"]}" | nc 127.0.0.1 "$prettierdport"
+
