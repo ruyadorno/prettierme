@@ -31,14 +31,12 @@ $ prettierme file.js
 
 ## Editor Integration
 
-- __Vim__: Install the [syntastic](https://github.com/scrooloose/syntastic) plugin, then make sure this is in your `.vimrc`:
+- __Vim__: I'm running an extra vim configuration file that sets up commands to run after saving each file, that allows me to keep a seamless integration with [eslintme](https://github.com/ruyadorno/eslintme) for syntax/lint errors:
 
 ```vim
-let g:syntastic_javascript_checkers = ['prettier']
-let g:syntastic_javascript_prettier_generic = 1
-let g:syntastic_javascript_prettier_exec = 'prettierme'
+:autocmd BufWritePost *.js silent! !prettierme <afile> >/dev/null 2>&1
+:autocmd BufWritePost *.js silent! e | redraw! | SyntasticCheck | SignifyRefresh
 ```
-
 
 ## Support
 
