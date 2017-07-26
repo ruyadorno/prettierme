@@ -13,10 +13,10 @@ function run(params, assertFn, cb) {
 }
 
 function testSuccessLint() {
-	console.log('> No output on success linting');
+	console.log('> Fixed output on success linting');
 	run(['test/fixtures/success.js'], function (data) {
 		assert.equal(
-			'',
+			fs.readFileSync('test/fixtures/success.js').toString(),
 			data.toString()
 		);
 	}, testErrorLint);
