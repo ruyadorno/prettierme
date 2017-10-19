@@ -75,6 +75,12 @@ if [ -z "$prettierddata" ]; then
 	prettierdtoken=$(echo $prettierddata  | cut -d ' ' -f 2)
 fi
 
+if nc 2>&1 | grep -- -q >/dev/null; then
+  NC_OPTIONS="-q 0"
+else
+  NC_OPTIONS=""
+fi
+
 # uses netcat to lint the file
-echo "$prettierdtoken {\"cwd\":\"$PWD\",\"args\":[\"--write\", \"--local-only\", \"--pkg-conf\", \"$1\"]}" | nc 127.0.0.1 "$prettierdport"
+echo "$prettierdtoken {\"cwd\":\"$PWD\",\"args\":[\"--write\", \"--local-only\", \"--pkg-conf\", \"$1\"]}" | nc $NC_OPTIONS 127.0.0.1 "$prettierdport"
 
