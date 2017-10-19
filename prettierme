@@ -76,5 +76,5 @@ if [ -z "$prettierddata" ]; then
 fi
 
 # uses netcat to lint the file
-echo "$prettierdtoken {\"cwd\":\"$PWD\",\"args\":[\"--local-only\", \"--pkg-conf\", \"$1\"]}" | nc 127.0.0.1 "$prettierdport"
+echo "$prettierdtoken {\"cwd\":\"$PWD\",\"args\":[\"--write\", \"--local-only\", \"--pkg-conf\", \"$1\"]}" | nc 127.0.0.1 "$prettierdport"
 
