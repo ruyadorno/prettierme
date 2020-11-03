@@ -50,7 +50,7 @@ function testStoppedStatus() {
 	console.log('> Status should indicate not running server');
 	run(['status'], function (data) {
 		assert.equal(
-			'Error: Not running\n',
+			'Not running\n',
 			data.toString()
 		);
 	}, testStartprettierd);
@@ -70,7 +70,7 @@ function testStartedStatus() {
 	console.log('> Status should be running');
 	run(['status'], function (data) {
 		assert.equal(
-			'Running\n',
+			'Running',
 			data.toString()
 		);
 	}, testRestartprettierd);
