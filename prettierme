@@ -14,7 +14,7 @@ Options:
 	exit 0;
 fi
 
-# figures out the path to prettier_d executable
+# figures out the path to prettierd executable
 function findprettierd() {
 	source="${BASH_SOURCE[0]}"
 	while [ -h "$source" ]; do
@@ -23,19 +23,27 @@ function findprettierd() {
 		[[ $source != /* ]] && source="$currdir/$source"
 	done
 	currdir="$( cd -P "$( dirname "$source" )" && pwd )"
-	if hash prettier_d 2>/dev/null; then
-		# use global prettier_d install
-		echo prettier_d
-	elif [ -e "$currdir/node_modules/prettier_d/bin/prettier_d.js" ]; then
+	globalbin="$(npm bin -g)"
+	localbin="$(npm bin)"
+	if hash prettierd 2>/dev/null; then
+		# use global prettierd install
+		echo prettierd
+	elif [ -e "$globalbin/prettierd" ]; then
+		# use global-installed npm binary
+		echo "$globalbin/prettierd"
+	elif [ -e "$localbin/prettierd" ]; then
+		# use local-installed npm binary
+		echo "$localbin/prettierd"
+	elif [ -e "$currdir/node_modules/@fsouza/prettierd/bin/prettierd.js" ]; then
 		# nested install
-		echo "$currdir/node_modules/prettier_d/bin/prettier_d.js"
+		echo "$currdir/node_modules/@fsouza/prettierd/bin/prettierd.js"
 	else
-		# flat npm3 install
-		echo "$currdir/../prettier_d/bin/prettier_d.js"
+		# nested install ?
+		echo "$currdir/../@fsouza/prettierd/bin/prettierd.js"
 	fi
 }
 
-# forwards prettier_d commands
+# forwards prettierd commands
 if [ "$1" == "stop" ]; then
 	prettierexec="$(findprettierd)"
 	"$prettierexec" stop
@@ -57,8 +65,8 @@ if [ "$1" == "restart" ]; then
 	exit 0;
 fi
 
-# gets the port of prettier_d running server
-prettierddata=$(cat ~/.prettier_d 2> /dev/null)
+# gets the port of prettierd running server
+prettierddata=$(cat ~/.prettierd 2> /dev/null)
 prettierdport="$(echo $prettierddata | cut -d ' ' -f 1)"
 prettierdtoken="$(echo $prettierddata | cut -d ' ' -f 2)"
 
@@ -67,10 +75,10 @@ if [ -z "$prettierddata" ]; then
 
 	prettierexec="$(findprettierd)"
 
-	# starts the prettier_d server
+	# starts the prettierd server
 	"$prettierexec" start
 	sleep 0.1
-	prettierddata=$(cat ~/.prettier_d)
+	prettierddata=$(cat ~/.prettierd)
 	prettierdport=$(echo $prettierddata | cut -d ' ' -f 1)
 	prettierdtoken=$(echo $prettierddata  | cut -d ' ' -f 2)
 fi
@@ -82,5 +90,5 @@ else
 fi
 
 # uses netcat to lint the file
-echo "$prettierdtoken {\"cwd\":\"$PWD\",\"args\":[\"--write\", \"--local-only\", \"--pkg-conf\", \"$1\"]}" | nc $NC_OPTIONS 127.0.0.1 "$prettierdport"
+echo "$prettierdtoken $PWD --stdin" | cat - "$1" | nc $NC_OPTIONS 127.0.0.1 "$prettierdport" > "$1"
 

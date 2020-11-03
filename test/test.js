@@ -37,7 +37,7 @@ function revertErrorFile() {
 }
 
 function testStopprettierd() {
-	console.log('> Successfully stops prettier_d server');
+	console.log('> Successfully stops prettierd server');
 	run(['stop'], function (data) {
 		assert.equal(
 			'',
@@ -57,7 +57,7 @@ function testStoppedStatus() {
 }
 
 function testStartprettierd() {
-	console.log('> Should be able to start prettier_d');
+	console.log('> Should be able to start prettierd');
 	run(['start'], function (data) {
 		assert.equal(
 			'',
@@ -77,7 +77,7 @@ function testStartedStatus() {
 }
 
 function testRestartprettierd() {
-	console.log('> Should be able to restart prettier_d');
+	console.log('> Should be able to restart prettierd');
 	run(['restart'], function (data) {
 		assert.equal(
 			'',
