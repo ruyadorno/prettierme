@@ -8,7 +8,7 @@
 
 ## About
 
-This is a convenience script around [prettier_d](https://github.com/josephfrazier/prettier_d) to run it at [maximum speed](https://github.com/josephfrazier/prettier_d#moar-speed) using **netcat**.
+This is a convenience script around [prettierd](https://github.com/fsouza/prettierd) to run it at [maximum speed](https://github.com/mantoni/core_d.js#moar-speed) using **netcat**.
 
 **prettier_d** is an amazing tool that keeps a local server running **prettier** to cut linting time for a single file, so that we can get instant linting in our preferred editor.
 
@@ -40,7 +40,7 @@ $ prettierme file.js
 
 ## Support
 
-Please note that this is a very platform-specific convenience wrapper around **prettier_d**, it only supports unix platforms where **netcat** is available. For usage in any other systems please stick with the regular [prettier_d](https://github.com/josephfrazier/prettier_d).
+Please note that this is a very platform-specific convenience wrapper around **prettierd**, it only supports unix platforms where **netcat** is available. For usage in any other systems I'd recommend starting with the [prettier cli](https://www.npmjs.com/package/prettier).
 
 
 ## License
