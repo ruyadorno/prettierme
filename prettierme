@@ -90,5 +90,8 @@ else
 fi
 
 # uses netcat to lint the file
-echo "$prettierdtoken $PWD --stdin" | cat - "$1" | nc $NC_OPTIONS 127.0.0.1 "$prettierdport" > "$1"
+res=$(echo "$prettierdtoken $PWD --stdin" | cat - "$1" | nc $NC_OPTIONS 127.0.0.1 "$prettierdport")
+if [ $(echo "$res" | tail  -1) != "# exit 1" ]; then
+	echo "$res" > "$1"
+fi
 
